@@ -8,15 +8,24 @@ class OrderTracker {
 
     addObserver(observer) {
         // TODO: Add the observer to the `this.observers` array.
+        this.observers.push(observer);
     }
 
     removeObserver(observer) {
         // TODO: Remove the observer from the `this.observers` array.
+        this.observers = this.observers.filter(o => o != observer);
     }
 
     notifyObservers() {
         // TODO: Loop through all observers and call their `update` method.
         // Pass `this.orderId` and `this.status` to the update method.
+        this.observers.forEach(o => {
+            if (typeof o.update === 'function') {
+                o.update(this.orderId, this.status);
+            }
+        });
+        
+
     }
 
     updateStatus(newStatus) {
@@ -24,6 +33,7 @@ class OrderTracker {
         console.log(`Order ${this.orderId} status updated to: ${this.status}`);
         this.notifyObservers();
     }
+
 }
 
 // The Observer (also known as Subscriber) interface (conceptual)
@@ -38,6 +48,7 @@ class EmailNotifier extends OrderObserver {
     update(orderId, status) {
         // TODO: Log a message to the console simulating an email notification.
         // e.g., `Email: Order [orderId] is now [status].`
+        console.log(`Email: Order ${orderId} is now ${status}.`);
     }
 }
 
@@ -46,6 +57,7 @@ class DashboardNotifier extends OrderObserver {
     update(orderId, status) {
         // TODO: Log a message to the console simulating a dashboard update.
         // e.g., `Dashboard: Order [orderId] status updated to [status].`
+        console.log(`Dashboard: Order ${orderId} status updated to ${status}.`);
     }
 }
 

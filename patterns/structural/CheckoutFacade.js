@@ -17,6 +17,13 @@ class CheckoutFacade {
         // 2. If they are, process the payment using `paymentService.processPayment()`.
         // 3. If payment is successful, arrange shipping using `shippingService.arrangeShipping()`.
         // 4. Log the result of each step. If a step fails, log it and stop.
+        if (this.inventoryService.checkStock(orderDetails.productIds)){
+            var checkout = this.paymentService.processPayment(orderDetails.userId,orderDetails.amount);
+            if (checkout){
+                this.shippingService.arrangeShipping(orderDetails.userId,orderDetails.shippingInfo);
+            }
+        }
+        
     }
 }
 
